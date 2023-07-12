@@ -1,0 +1,51 @@
+syntax = "proto3";
+package socket.gateway;
+import "google/protobuf/timestamp.proto";
+
+message User {
+  string id = 1;
+  string full_name = 2;
+  string email = 3;
+  string password = 4;
+  bool verified = 5;
+  google.protobuf.Timestamp created_at = 6;
+  google.protobuf.Timestamp updated_at = 7;
+  repeated OTP otps = 8;
+  bool online = 9;
+  repeated Message sent_messages = 10;
+  repeated Message received_messages = 11;
+  string private_key = 12;
+  string public_key = 13;
+}
+
+enum OTPType {
+  EMAIL_VERIFICATION = 0;
+  PASSWORD_RESET = 1;
+  OTHER = 2;
+}
+
+message OTP {
+  string id = 1;
+  string code = 2;
+  OTPType otp_type = 3;
+  string user_id = 4;
+  google.protobuf.Timestamp created_at = 5;
+}
+
+message Message {
+  string id = 1;
+  string message = 2;
+  User sender = 3;
+  User receiver = 4;
+  google.protobuf.Timestamp created_at = 5;
+  bool is_group_chat = 6;
+  Group group = 7;
+  string attached_file = 8;
+}
+
+message Group {
+  string id = 1;
+  string name = 2;
+  repeated User members = 3;
+  repeated Message messages = 4;
+}
